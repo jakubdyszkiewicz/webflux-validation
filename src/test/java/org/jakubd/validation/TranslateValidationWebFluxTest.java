@@ -1,7 +1,6 @@
 package org.jakubd.validation;
 
 import org.assertj.core.api.Assertions;
-import org.jakubd.validation.ValidationEndpoint.TestBody;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,8 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TranslateValidationTest {
+@SpringBootTest(
+        properties = "spring.main.web-application-type: reactive",
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class TranslateValidationWebFluxTest {
 
     @LocalServerPort
     int port;
@@ -26,7 +27,7 @@ public class TranslateValidationTest {
         // when
         ClientResponse response = WebClient.create().post()
                 .uri("http://localhost:" + port + "/validate")
-                .header("Accept-Language", "pl")
+                .header("Accept-Language", "pl-PL")
                 .body(Mono.just(new TestBody()), TestBody.class)
                 .exchange()
                 .block();
